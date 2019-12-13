@@ -1,0 +1,62 @@
+<!DOCTYPE html> <meta charset="utf8" />
+<html>
+<head>
+    <link rel="stylesheet" href="css/editor.css" />
+    <link rel="stylesheet" href="css/website.css" />
+</head>
+<body>
+
+<div id="area-editor">
+    <div>
+        <h2>Editor 1</h2>
+        <p><textarea class="editor" name="editor_1" id="editor-1">* List item with *italic* and **bold** markdown text.</textarea></p>
+    </div>
+    <div>
+        <h2>Editor 2</h2>
+        <p><textarea class="editor" name="editor_2" id="editor-2">Some **other** text.</textarea></p>
+    </div>
+</div>
+
+<div id="area-testing">
+    <h2>Testing area (editor 1)</h2>
+    <p><textarea type="text" id="test_input"></textarea></p>
+    <p>
+        <button type="button" onclick="make_editor(); this.disabled = 'disabled';">Make editor</button>
+        <button type="button" onclick="get_textarea();">Get</button>
+        <button type="button" onclick="set_textarea();">Set</button>
+    </p>
+
+</div>
+
+<script src="ProseArea.js"></script>
+<script src="ProseArea-dev.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+// This <script> section belongs only to the page and will not be included in
+// the final package (except possibly as an example).
+
+function get_textarea() {
+    let editor = document.querySelector('#editor-1');
+    let test_input = document.querySelector('#test_input');
+    test_input.value = editor.value;
+}
+
+function set_textarea() {
+    let editor = document.querySelector('#editor-1');
+    let test_input = document.querySelector('#test_input');
+    editor.value = test_input.value;
+}
+
+function make_editor() {
+    let translations = {
+        'markdown': 'Markdán',
+        'wysiwyg': 'ÞSÞSEÞSÞF'
+    }
+    markdownify(document.querySelectorAll('.editor'), 'wysiwyg', translations);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "prosearea",
+  "dependencies": {
+    "@rollup/plugin-json": "^4.0.0",
+    "prosemirror-example-setup": "^1.0.1",
+    "prosemirror-markdown": "^1.4.2",
+    "prosemirror-model": "^1.6.4",
+    "prosemirror-schema-basic": "^1.0.0",
+    "prosemirror-state": "^1.2.2",
+    "prosemirror-view": "^1.6.8",
+    "punycode": "^2.1.1",
+    "rollup-plugin-node-builtins": "^2.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "babel-loader": "^8.0.5",
+    "rollup": "^1.1.0",
+    "rollup-plugin-babel": "^4.3.1",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0"
+  }
+}
