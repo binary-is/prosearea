@@ -6,6 +6,12 @@
 </head>
 <body>
 
+<!--
+Form has method="get" because we need to be able to show if the form's input
+values are shown in the URL, or even via JavaScript, which cannot access POST
+variable.
+-->
+<form method="get">
 <div id="area-editor">
     <div>
         <h2>Editor 1</h2>
@@ -24,9 +30,12 @@
         <button type="button" onclick="make_editor(); this.disabled = 'disabled';">Make editor</button>
         <button type="button" onclick="get_textarea();">Get</button>
         <button type="button" onclick="set_textarea();">Set</button>
+        |
+        <button type="submit">Submit</button>
     </p>
 
 </div>
+</form>
 
 <script src="ProseArea.js"></script>
 <script src="ProseArea-dev.js"></script>

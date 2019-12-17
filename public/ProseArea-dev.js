@@ -96,6 +96,14 @@ function markdownify(target, default_text_type='wysiwyg', translations={}) {
     let start_content = target.value;
     target.innerText = '';
 
+    // Update the target's innerText from the value on form submit to make
+    // sure that the value is properly submitted with the form.
+    if (target.form) {
+        target.form.addEventListener('submit', function(event) {
+            target.innerText = target.value;
+        });
+    }
+
     // Create a more malleable div called "place" to host the editor, out of
     // the given textarea called "target".
     let place = document.createElement('div');
