@@ -35,6 +35,14 @@ class ProseMirrorView {
             state: this.make_editor_state(value),
             editable: function() { return editable; }
         });
+
+        // Hide the menubar if non-editable. This is a somewhat temporary
+        // solution, because we're still utilizing ProseMirror's example-setup
+        // package. The proper solution is to implement our own menubar but
+        // we'll go with whatever works for now.
+        if (!editable) {
+            this.place.querySelector('.ProseMirror-menubar').style.display = 'none';
+        }
     }
 
     make_editor_state(value) {
