@@ -3,8 +3,9 @@
 
 class MarkdownView {
 
-    constructor(place, value) {
+    constructor(place, value, editable=true) {
         this.textarea = place.appendChild(document.createElement("textarea"));
+        this.textarea.disabled = !editable;
         this.textarea.value = value;
     }
 
@@ -28,10 +29,11 @@ class MarkdownView {
 
 class ProseMirrorView {
 
-    constructor(place, value) {
+    constructor(place, value, editable=true) {
         this.place = place;
         this.view = new ProseArea.EditorView(place, {
-            state: this.make_editor_state(value)
+            state: this.make_editor_state(value),
+            editable: function() { return editable; }
         });
     }
 
@@ -69,7 +71,7 @@ function markdownify(target, default_text_type='wysiwyg', translations={}, show_
     // but the remainder of the function instead.
     if (target.length != undefined) {
         for (let i = 0; i < target.length; i++) {
-            markdownify(target[i], default_text_type, translations);
+            markdownify(target[i], default_text_type, translations, show_view_buttons);
         }
         return;
     }
@@ -92,8 +94,9 @@ function markdownify(target, default_text_type='wysiwyg', translations={}, show_
         console.error('Markdown/WYSIWYG target textarea should have a name.');
     }
 
-    // Fetch and clear the start content.
+    // Fetch and clear information we need from the target.
     let start_content = target.value;
+    let editable = !target.disabled;
     target.innerText = '';
 
     // Update the target's innerText from the value on form submit to make
@@ -124,7 +127,7 @@ function markdownify(target, default_text_type='wysiwyg', translations={}, show_
 
     // Create the appropriate ProseMirror view.
     let View = default_text_type == 'markdown' ? MarkdownView : ProseMirrorView;
-    var view = new View(place, start_content);
+    var view = new View(place, start_content, editable);
 
     if (show_view_buttons) {
         ['markdown', 'wysiwyg'].forEach(text_type => {
@@ -167,7 +170,7 @@ function markdownify(target, default_text_type='wysiwyg', translations={}, show_
                 // Re-create view according to selection with content.
                 let content = view.content;
                 view.destroy();
-                view = new View(place, content);
+                view = new View(place, content, editable);
                 view.focus();
             });
         });
