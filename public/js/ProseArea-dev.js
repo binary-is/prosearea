@@ -61,7 +61,7 @@ class ProseMirrorView {
 }
 
 
-function markdownify(target, default_text_type='wysiwyg', translations={}) {
+function markdownify(target, default_text_type='wysiwyg', translations={}, show_view_buttons=true) {
 
     // Seamless support for multiple targets. If we've received more than one
     // object, we'll iterate through them and call this very same function
@@ -126,48 +126,50 @@ function markdownify(target, default_text_type='wysiwyg', translations={}) {
     let View = default_text_type == 'markdown' ? MarkdownView : ProseMirrorView;
     var view = new View(place, start_content);
 
-    ['markdown', 'wysiwyg'].forEach(text_type => {
-        // Create HTML elements for label and radio button.
-        let label = document.createElement('label');
-        let button = document.createElement('input');
+    if (show_view_buttons) {
+        ['markdown', 'wysiwyg'].forEach(text_type => {
+            // Create HTML elements for label and radio button.
+            let label = document.createElement('label');
+            let button = document.createElement('input');
 
-        // Configure the radio button.
-        button.setAttribute('name', 'text_type_' + target_name);
-        button.setAttribute('type', 'radio');
-        button.setAttribute('value', text_type);
-        if (text_type == default_text_type) {
-            button.setAttribute('checked', 'checked');
-        }
-
-        // Add the radio button to the label.
-        label.append(button);
-        label.append(' ' + translations[text_type]);
-
-        // Place the label (containing the button) immediately following the
-        // element that we wish to convert into a WYSIWYG/Markdown editor.
-        place.parentNode.insertBefore(label, place);
-
-        // Make the button do stuff.
-        button.addEventListener("change", () => {
-            // Obviously, the radio button shouldn't do anything unless it's
-            // the one being selected.
-            if (!button.checked) {
-                return;
+            // Configure the radio button.
+            button.setAttribute('name', 'text_type_' + target_name);
+            button.setAttribute('type', 'radio');
+            button.setAttribute('value', text_type);
+            if (text_type == default_text_type) {
+                button.setAttribute('checked', 'checked');
             }
 
-            // Figure out whether WYSIWYG or markdown are being selected.
-            let View = button.value == "markdown" ? MarkdownView : ProseMirrorView;
+            // Add the radio button to the label.
+            label.append(button);
+            label.append(' ' + translations[text_type]);
 
-            // No need to do anything is current view already selected.
-            if (view instanceof View) {
-                return;
-            }
+            // Place the label (containing the button) immediately following the
+            // element that we wish to convert into a WYSIWYG/Markdown editor.
+            place.parentNode.insertBefore(label, place);
 
-            // Re-create view according to selection with content.
-            let content = view.content;
-            view.destroy();
-            view = new View(place, content);
-            view.focus();
+            // Make the button do stuff.
+            button.addEventListener("change", () => {
+                // Obviously, the radio button shouldn't do anything unless it's
+                // the one being selected.
+                if (!button.checked) {
+                    return;
+                }
+
+                // Figure out whether WYSIWYG or markdown are being selected.
+                let View = button.value == "markdown" ? MarkdownView : ProseMirrorView;
+
+                // No need to do anything is current view already selected.
+                if (view instanceof View) {
+                    return;
+                }
+
+                // Re-create view according to selection with content.
+                let content = view.content;
+                view.destroy();
+                view = new View(place, content);
+                view.focus();
+            });
         });
-    });
+    }
 }
