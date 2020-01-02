@@ -9,7 +9,7 @@ export default {
   input: './src/index.js',
   output: {
     format: 'iife',
-    file: 'public/ProseArea.js',
+    file: 'public/js/ProseArea.js',
     name: 'ProseArea'
   },
   plugins: [
