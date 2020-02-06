@@ -4,3 +4,10 @@
 0.2:
     * Files moved around and renamed.
     * CHANGELOG.md added.
+
+0.3:
+    * WYSIWYG/markdown buttons optionally hidden.
+    * Support for disabling WYSIWYG/markdown editor via disabled-attribute.
+    * Event "changed" emitted when content changes.
+    * Event "save" periodically emitted if necessary, with 1-second hard-coded interval.
+    * View object accessible through target textarea node.
