@@ -3,7 +3,7 @@
 
 class MarkdownView {
 
-    constructor(place, value, editable=true) {
+    constructor(target, place, value, editable=true) {
         this.textarea = place.appendChild(document.createElement("textarea"));
         this.textarea.disabled = !editable;
         this.textarea.value = value;
@@ -29,12 +29,24 @@ class MarkdownView {
 
 class ProseMirrorView {
 
-    constructor(place, value, editable=true) {
+    constructor(target, place, value, editable=true) {
+        this.timer = null;
+        this.is_saved = true;
+
+        this.target = target;
         this.place = place;
+
         this.view = new ProseArea.EditorView(place, {
             state: this.make_editor_state(value),
-            editable: function() { return editable; }
+            editable: function() { return editable; },
+            dispatchTransaction: this.dispatchTransaction.bind(this),
         });
+
+        // To provide access to the view (for example the save-function)
+        // through the target textarea node.
+        // Example:
+        //     document.querySelector('.prosearea-editor').view.save()
+        target.view = this;
 
         // Hide the menubar if non-editable. This is a somewhat temporary
         // solution, because we're still utilizing ProseMirror's example-setup
@@ -45,6 +57,51 @@ class ProseMirrorView {
         }
     }
 
+    save() {
+        // Check if saving is needed.
+        if (!this.is_saved) {
+
+            // Retrieve markdown.
+            let markdown = this.getMarkdown();
+
+            // Emit an event to notify external scripts.
+            this.target.dispatchEvent(new CustomEvent('save', { detail: markdown }));
+
+            // Mark current content as saved.
+            this.is_saved = true;
+        }
+    }
+
+    dispatchTransaction(transaction) {
+
+        // Check if changes have actually been made. Note that this may
+        // include white-space content that does not reflect in a change in
+        // the produced markdown.
+        if (transaction.steps.length > 0) {
+
+            // Mark this content as unsaved.
+            this.is_saved = false;
+
+            // Dispatch an event when content changes so that external JS is
+            // able to react accordingly, for example by updating a status
+            // message or enabling a save-button.
+            this.target.dispatchEvent(new CustomEvent('changed'));
+        }
+
+        // If timer is already running, we'll reset it. This means that every
+        // time the user interacts with the editor and leaves it alone for the
+        // given amount of time, the editor checks if the content has changed
+        // and saves it, if so.
+        if (this.timer != null) {
+            window.clearTimeout(this.timer);
+        }
+        this.timer = setTimeout(this.save.bind(this), 1000);
+
+        // Internal ProseMirror stuff. Update the stuff so that the user's
+        // requested changes take effect.
+        this.view.updateState(this.view.state.apply(transaction));
+    }
+
     make_editor_state(value) {
         return ProseArea.EditorState.create({
             doc: ProseArea.defaultMarkdownParser.parse(value),
@@ -52,8 +109,13 @@ class ProseMirrorView {
         });
     }
 
-    get content() {
+    // Function to simplify the getting of content in markdown format.
+    getMarkdown() {
         return ProseArea.defaultMarkdownSerializer.serialize(this.view.state.doc);
+    }
+
+    get content() {
+        return this.getMarkdown();
     }
 
     set content(value) {
@@ -135,7 +197,7 @@ function markdownify(target, default_text_type='wysiwyg', translations={}, show_
 
     // Create the appropriate ProseMirror view.
     let View = default_text_type == 'markdown' ? MarkdownView : ProseMirrorView;
-    var view = new View(place, start_content, editable);
+    var view = new View(target, place, start_content, editable);
 
     if (show_view_buttons) {
         ['markdown', 'wysiwyg'].forEach(text_type => {
@@ -178,7 +240,7 @@ function markdownify(target, default_text_type='wysiwyg', translations={}, show_
                 // Re-create view according to selection with content.
                 let content = view.content;
                 view.destroy();
-                view = new View(place, content, editable);
+                view = new View(target, place, content, editable);
                 view.focus();
             });
         });
