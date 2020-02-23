@@ -11,3 +11,7 @@
     * Event "changed" emitted when content changes.
     * Event "save" periodically emitted if necessary, with 1-second hard-coded interval.
     * View object accessible through target textarea node.
+
+0.3.1:
+    * LICENSE updated (MIT).
+    * README updated.
