@@ -15,3 +15,6 @@
 0.3.1:
     * LICENSE updated (MIT).
     * README updated.
+
+0.3.2:
+    * README updated some more.
