@@ -4,8 +4,6 @@
 
 ProseArea is a drop-in replacement for HTML textareas, providing [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) editing of [markdown](https://en.wikipedia.org/wiki/Markdown), based on the [ProseMirror](https://prosemirror.net/) web library.
 
-It is written using Node.js.
-
 ## Design goals
 
 * WYSIWYG markdown editing.
@@ -16,13 +14,33 @@ It is written using Node.js.
 
 ## Installation
 
-You need `yarn` (or at least `npm`) and `rollup` installed.
+If you only want to start using ProseArea to turn textareas on your webpage to fully-functional WYSIWYG editors spouting out beautiful markdown, then everything you need is in `public/js`.
+
+To see how to use it, take a look at `public/demo.html` for an example of how to convert HTML textareas into WYSIWYG/markdown editors.
+
+Once a textarea has been turned into a WYSIWYG editor, you can read and write its content through the regular `value` property of the textarea, as shown in the example (`public/demo.html`). On GET and POST submissions, the editor's content will be delivered in markdown format with the textarea's name as a variable.
+
+One of ProseArea's most important design goals is ease-of-use without in-depth knowledge of ProseMirror. If you have any kind of trouble using ProseArea, please let the authors know, since that indicates a need to make it even simpler.
+
+### Known problems
+
+* `.focus()` on textarea does not work.
+
+## Building
+
+ProseArea is developed using Node.js, which you are expected to be at least mildly familiar with.
+
+You need `yarn` (or at least `npm`) and `rollup` installed to **build** ProseArea.
+
+Note that building is not necessary if you just want to start using it. You only need to do this if you want to play around with the code or partake in ProseArea's development.
 
     yarn install # Same as `npm install` except better.
     rollup -c
 
-Then take a look at `public/demo.html` for an example of how to convert HTML textareas into WYSIWYG/markdown editors.
-
 ## License
 
 Distributed under the MIT license as detailed in the file `LICENSE`.
+
+## Authors
+
+* Helgi Hrafn Gunnarsson <helgi@binary.is>
