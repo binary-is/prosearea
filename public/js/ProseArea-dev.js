@@ -167,13 +167,13 @@ function markdownify(target, default_text_type='wysiwyg', translations={}, show_
     // Fetch and clear information we need from the target.
     let start_content = target.value;
     let editable = !target.disabled;
-    target.innerText = '';
+    target.textContent = '';
 
-    // Update the target's innerText from the value on form submit to make
+    // Update the target's textContet from the value on form submit to make
     // sure that the value is properly submitted with the form.
     if (target.form) {
         target.form.addEventListener('submit', function(event) {
-            target.innerText = target.value;
+            target.textContent = target.value;
         });
     }
 
