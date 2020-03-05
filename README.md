@@ -22,10 +22,6 @@ Once a textarea has been turned into a WYSIWYG editor, you can read and write it
 
 One of ProseArea's most important design goals is ease-of-use without in-depth knowledge of ProseMirror. If you have any kind of trouble using ProseArea, please let the authors know, since that indicates a need to make it even simpler.
 
-### Known problems
-
-* `.focus()` on textarea does not work.
-
 ## Building
 
 ProseArea is developed using Node.js, which you are expected to be at least mildly familiar with.

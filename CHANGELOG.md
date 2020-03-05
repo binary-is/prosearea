@@ -21,3 +21,6 @@
 
 0.3.3:
     * Fixed bug resulting in newlines being omitted from POST content.
+
+0.3.4:
+    * ransparent support for focus-function on textarea -> WYSIWYG.
