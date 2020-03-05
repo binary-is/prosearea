@@ -48,6 +48,9 @@ class ProseMirrorView {
         //     document.querySelector('.prosearea-editor').view.save()
         target.view = this;
 
+        // Replace the target's focus-function with the one from the view.
+        target.focus = this.focus;
+
         // Hide the menubar if non-editable. This is a somewhat temporary
         // solution, because we're still utilizing ProseMirror's example-setup
         // package. The proper solution is to implement our own menubar but
