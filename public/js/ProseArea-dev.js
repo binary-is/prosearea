@@ -183,6 +183,8 @@ function markdownify(target, default_text_type='wysiwyg', translations={}, show_
     // Create a more malleable div called "place" to host the editor, out of
     // the given textarea called "target".
     let place = document.createElement('div');
+    // Add a CSS class so that the instance's style can be customized.
+    place.classList.add('prosearea-instance');
     target.parentNode.insertBefore(place, target);
     target.style.display = 'none';
     Object.defineProperty(target, 'value', {

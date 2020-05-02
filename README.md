@@ -22,6 +22,12 @@ Once a textarea has been turned into a WYSIWYG editor, you can read and write it
 
 One of ProseArea's most important design goals is ease-of-use without in-depth knowledge of ProseMirror. If you have any kind of trouble using ProseArea, please let the authors know, since that indicates a need to make it even simpler.
 
+### Notes on usage
+
+When ProseArea is applied to a `<textarea/>` (as per `public/demo.html`), it gains the CSS class `prosearea-instance`, which you can use to apply your own styles to it.
+
+In particular, if you are applying it to already existing web designs, you might want to play around with CSS styles `display`, `float`, and dimension styles such as `max-width`. This is because ProseArea turns `<textarea/>` nodes into `<div/>` nodes, which behave differently with regard to available space and such.
+
 ## Building
 
 ProseArea is developed using Node.js, which you are expected to be at least mildly familiar with.
