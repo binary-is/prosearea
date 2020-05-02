@@ -24,3 +24,6 @@
 
 0.3.4:
     * Transparent support for focus-function on textarea -> WYSIWYG.
+
+0.3.5:
+    * CSS class "prosearea-instance" added automatically to ProseArea's container for custom styling.
